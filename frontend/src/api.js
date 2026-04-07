@@ -1,7 +1,7 @@
-import axios from 'axios';
+'http axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api'
+  baseURL: 'https://ielts-backend-rhkb.onrender.com/api'
 });
 
 API.interceptors.request.use((config) => {
