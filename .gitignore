@@ -4,5 +4,4 @@ dist
 .env.local
 .wrangler
 .DS_Store
-bun.lockb
 package-lock.json
