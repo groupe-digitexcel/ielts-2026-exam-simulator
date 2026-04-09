@@ -1,91 +1,45 @@
-import { Link, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import ProtectedRoute from './components/ProtectedRoute'
 
-function HomePage() {
-  return (
-    <div className="page">
-      <h1>IELTS 2026</h1>
-      <p>Your complete exam preparation platform.</p>
-
-      <div className="nav-links">
-        <Link to="/practice">Go to Practice</Link>
-        <Link to="/dashboard">Go to Dashboard</Link>
-        <Link to="/login">Login</Link>
-      </div>
-    </div>
-  )
-}
-
-function LoginPage() {
-  return (
-    <div className="page">
-      <h1>Login</h1>
-      <p>Access your IELTS 2026 student account.</p>
-      <Link to="/">← Back Home</Link>
-    </div>
-  )
-}
-
-function DashboardPage() {
-  return (
-    <div className="page">
-      <h1>Dashboard</h1>
-      <p>Track your progress, mock tests, and study performance.</p>
-      <Link to="/">← Back Home</Link>
-    </div>
-  )
-}
-
-function PracticePage() {
-  return (
-    <div className="page">
-      <h1>Practice Tests</h1>
-      <p>Start listening, reading, writing, and speaking practice here.</p>
-      <Link to="/">← Back Home</Link>
-    </div>
-  )
-}
-
-function NotFoundPage() {
-  return (
-    <div className="page">
-      <h1>404</h1>
-      <p>Page not found.</p>
-      <Link to="/">← Return Home</Link>
-    </div>
-  )
-}
+import Home        from './pages/Home'
+import Login       from './pages/Login'
+import Register    from './pages/Register'
+import Dashboard   from './pages/Dashboard'
+import Generate    from './pages/Generate'
+import ExamPage    from './pages/ExamPage'
+import Results     from './pages/Results'
+import Pricing     from './pages/Pricing'
+import Admin       from './pages/Admin'
+import NotFound    from './pages/NotFound'
 
 export default function App() {
-  const appName = import.meta.env.VITE_APP_NAME || 'IELTS 2026'
-
   return (
-    <div className="app-container">
-      <header className="app-header">
-        <div>
-          <h2>{appName}</h2>
-          <p>Built for serious IELTS success</p>
-        </div>
-        <nav className="top-nav">
-          <Link to="/">Home</Link>
-          <Link to="/practice">Practice</Link>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/login">Login</Link>
-        </nav>
-      </header>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/"               element={<Home />} />
+        <Route path="/login"          element={<Login />} />
+        <Route path="/register"       element={<Register />} />
+        <Route path="/pricing"        element={<Pricing />} />
 
-      <main className="app-main">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/practice" element={<PracticePage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-
-      <footer className="app-footer">
-        <p>© {new Date().getFullYear()} {appName}. All rights reserved.</p>
-      </footer>
-    </div>
+        <Route path="/dashboard" element={
+          <ProtectedRoute><Dashboard /></ProtectedRoute>
+        } />
+        <Route path="/exam/generate" element={
+          <ProtectedRoute><Generate /></ProtectedRoute>
+        } />
+        <Route path="/exam/:id" element={
+          <ProtectedRoute><ExamPage /></ProtectedRoute>
+        } />
+        <Route path="/exam/:id/results" element={
+          <ProtectedRoute><Results /></ProtectedRoute>
+        } />
+        <Route path="/admin" element={
+          <ProtectedRoute adminOnly><Admin /></ProtectedRoute>
+        } />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
